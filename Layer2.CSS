@@ -12,3 +12,18 @@ body {
     color: white;
     line-height: 1.6;
 }
+#Typography + Colors
+h1, h2, h3 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+p {
+    color: #cbd5f5;
+}
+
+:root {
+    --primary: #3b82f6;
+    --secondary: #1e293b;
+    --accent: #2563eb;
+}
