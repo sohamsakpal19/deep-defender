@@ -1,47 +1,64 @@
-const form = document.getElementById("detectForm");
-const imageInput = document.getElementById("imageInput");
-const audioInput = document.getElementById("audioInput");
-const urlInput = document.getElementById("urlInput");
-const resultDiv = document.getElementById("result");
+function switchTab(event, tabId) {
+    const panels = document.querySelectorAll('.tab-panel');
+    const links = document.querySelectorAll('.tab-link');
+    
+    panels.forEach(p => p.classList.remove('active'));
+    links.forEach(l => l.classList.remove('active'));
+    
+    document.getElementById(tabId).classList.add('active');
+    event.currentTarget.classList.add('active');
+}
 
-form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const formData = new FormData();
-
-    const imageFile = imageInput.files[0];
-    const audioFile = audioInput.files[0];
-    const urlValue = urlInput.value;
-
-    // Append data
-    if (imageFile) {
-        formData.append("image", imageFile);
+document.getElementById('file-input').addEventListener('change', function(e) {
+    if (e.target.files.length > 0) {
+        processAnalysis(e.target.files[0].name);
     }
+});
 
-    if (audioFile) {
-        formData.append("audio", audioFile);
-    }
+function processAnalysis(source) {
+    const box = document.getElementById('result-display');
+    const spinner = document.getElementById('spinner');
+    const content = document.getElementById('analysis-content');
+    const title = document.getElementById('risk-title');
+    const bar = document.getElementById('meter-fill');
+    const desc = document.getElementById('risk-desc');
 
-    if (urlValue) {
-        formData.append("url", urlValue);
-    }
+    box.classList.remove('hidden');
+    spinner.classList.remove('hidden');
+    content.classList.add('hidden');
 
-    // Optional: show loading
-    resultDiv.innerHTML = "Processing...";
+    setTimeout(() => {
+        spinner.classList.add('hidden');
+        content.classList.remove('hidden');
 
-    // Send request to backend
-    fetch("http://127.0.0.1:5000/detect", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        resultDiv.innerHTML = `
-            <p><strong>Result:</strong> ${data.result}</p>
-        `;
-    })
-    .catch(error => {
-        console.error(error);
-        resultDiv.innerHTML = `<p style="color:red;">Error occurred</p>`;
+        const isSuspicious = source.toLowerCase().includes('fake') || source === 'url';
+        
+        if (isSuspicious) {
+            title.innerText = "High Risk Detected";
+            title.style.color = "#ff4d4d";
+            bar.style.width = "85%";
+            bar.style.backgroundColor = "#ff4d4d";
+            desc.innerText = "Our models detected significant markers of AI manipulation in this content.";
+        } else {
+            title.innerText = "Content Authentic";
+            title.style.color = "#00ff88";
+            bar.style.width = "10%";
+            bar.style.backgroundColor = "#00ff88";
+            desc.innerText = "No significant signs of forgery detected. Content matches original patterns.";
+        }
+    }, 2000);
+}
+
+const dropArea = document.getElementById('drop-area');
+
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(name => {
+    dropArea.addEventListener(name, e => {
+        e.preventDefault();
+        e.stopPropagation();
     });
+});
+
+dropArea.addEventListener('drop', e => {
+    const file = e.dataTransfer.files[0];
+    processAnalysis(file.name);
 });

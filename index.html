@@ -3,20 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deep Defender</title>
-
-    <link rel="stylesheet" href="Layer2.css">
+    <title>Deep Defenders | Detection Portal</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <form id="detectForm">
-    <input type="file" id="imageInput" accept="image/*">
-    <input type="file" id="audioInput" accept="audio/*">
-    <input type="text" id="urlInput" placeholder="Enter URL">
-    <button type="submit">Detect</button>
-</form>
+    <div class="app-wrapper">
+        <header>
+            <div class="brand">🛡️ DEEP DEFENDERS</div>
+            <p class="tagline">Cyber Defence and Digital Trust</p>
+        </header>
 
-<div id="result"></div>
+        <section class="main-card">
+            <div class="tab-container">
+                <button class="tab-link active" onclick="switchTab(event, 'file-upload')">Upload Media</button>
+                <button class="tab-link" onclick="switchTab(event, 'url-upload')">Analyze URL</button>
+            </div>
 
+            <div id="file-upload" class="tab-panel active">
+                <div class="upload-box" id="drop-area">
+                    <div class="icon-group">
+                        <span>🎙️</span><span>🖼️</span>
+                    </div>
+                    <p>Drop audio or image files here</p>
+                    <button class="btn-secondary" onclick="document.getElementById('file-input').click()">Browse Files</button>
+                    <input type="file" id="file-input" hidden accept="image/*,audio/*">
+                </div>
+            </div>
+
+            <div id="url-upload" class="tab-panel">
+                <div class="input-form">
+                    <input type="text" id="url-field" placeholder="https://example.com/media.mp3">
+                    <button class="btn-primary" onclick="processAnalysis('url')">Analyze Link</button>
+                </div>
+            </div>
+
+            <div id="result-display" class="result-box hidden">
+                <div class="loader" id="spinner"></div>
+                <div id="analysis-content" class="hidden">
+                    <h2 id="risk-title"></h2>
+                    <div class="meter-bg">
+                        <div id="meter-fill" class="meter-bar"></div>
+                    </div>
+                    <p id="risk-desc"></p>
+                </div>
+            </div>
+        </section>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

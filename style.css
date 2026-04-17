@@ -1,110 +1,170 @@
-/* Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+:root {
+    --bg: #050a18;
+    --card: #111b2d;
+    --primary: #00f2ff;
+    --secondary: #7000ff;
+    --text: #ffffff;
+    --border: #233554;
+    --danger: #ff4d4d;
+    --safe: #00ff88;
 }
 
-/* Page background */
 body {
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    height: 100vh;
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
 }
 
-/* Form container */
-#detectForm {
-    background: #fff;
-    padding: 25px;
-    width: 360px;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-}
-
-/* Title */
-#detectForm h2 {
+.app-wrapper {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
     text-align: center;
-    margin-bottom: 15px;
-    color: #333;
 }
 
-/* Labels */
-label {
-    display: block;
-    margin-top: 12px;
-    font-size: 14px;
-    color: #444;
+.brand {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--primary);
 }
 
-/* Inputs */
-input[type="file"],
-input[type="text"] {
-    width: 100%;
-    margin-top: 6px;
-    padding: 9px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    transition: 0.3s;
+.tagline {
+    color: #8892b0;
+    margin-bottom: 40px;
 }
 
-/* Focus effect */
-input:focus {
-    border-color: #2a5298;
-    box-shadow: 0 0 5px rgba(42,82,152,0.3);
-    outline: none;
+.main-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
 }
 
-/* Button */
-button {
-    width: 100%;
-    margin-top: 18px;
-    padding: 10px;
+.tab-container {
+    display: flex;
+    background: rgba(0,0,0,0.2);
+}
+
+.tab-link {
+    flex: 1;
+    padding: 15px;
     border: none;
-    border-radius: 6px;
-    background: #2a5298;
-    color: #fff;
-    font-size: 15px;
+    background: none;
+    color: #8892b0;
     cursor: pointer;
+    font-weight: 600;
     transition: 0.3s;
 }
 
-/* Button hover */
-button:hover {
-    background: #1e3c72;
+.tab-link.active {
+    color: var(--primary);
+    background: var(--card);
+    border-bottom: 2px solid var(--primary);
 }
 
-/* Result box */
-#result {
-    margin-top: 15px;
+.tab-panel {
+    display: none;
+    padding: 40px;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+.upload-box {
+    border: 2px dashed var(--border);
+    border-radius: 15px;
+    padding: 30px;
+    transition: 0.3s;
+}
+
+.upload-box:hover {
+    border-color: var(--primary);
+}
+
+.icon-group {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.input-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input[type="text"] {
     padding: 12px;
-    border-radius: 6px;
-    background: #f4f6f9;
-    text-align: center;
-    min-height: 40px;
-    font-size: 14px;
-    font-weight: 500;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #0a1224;
+    color: white;
 }
 
-/* Default result text (success case) */
-#result p {
-    color: green;
+button {
+    cursor: pointer;
+    border: none;
+    transition: 0.3s;
 }
 
-/* Loading text */
-#result:empty::before {
-    content: "";
-}
-
-/* When showing "Processing..." */
-#result:contains("Processing") {
-    color: #555;
-}
-
-/* Error (your inline style will override, but we support it) */
-#result p[style*="red"] {
+.btn-primary {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
     font-weight: bold;
-    color: red !important;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    padding: 8px 20px;
+    border-radius: 5px;
+}
+
+.result-box {
+    padding: 30px;
+    border-top: 1px solid var(--border);
+}
+
+.hidden { display: none; }
+
+.loader {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.meter-bg {
+    height: 10px;
+    background: var(--border);
+    border-radius: 5px;
+    margin: 15px 0;
+}
+
+.meter-bar {
+    height: 100%;
+    width: 0;
+    border-radius: 5px;
+    transition: 1s ease-out;
+}
+
+footer {
+    margin-top: 30px;
+    font-size: 0.8rem;
+    color: #495670;
 }
