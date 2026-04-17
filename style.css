@@ -1,0 +1,170 @@
+:root {
+    --bg: #050a18;
+    --card: #111b2d;
+    --primary: #00f2ff;
+    --secondary: #7000ff;
+    --text: #ffffff;
+    --border: #233554;
+    --danger: #ff4d4d;
+    --safe: #00ff88;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.app-wrapper {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    text-align: center;
+}
+
+.brand {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--primary);
+}
+
+.tagline {
+    color: #8892b0;
+    margin-bottom: 40px;
+}
+
+.main-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.tab-container {
+    display: flex;
+    background: rgba(0,0,0,0.2);
+}
+
+.tab-link {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    background: none;
+    color: #8892b0;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.tab-link.active {
+    color: var(--primary);
+    background: var(--card);
+    border-bottom: 2px solid var(--primary);
+}
+
+.tab-panel {
+    display: none;
+    padding: 40px;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+.upload-box {
+    border: 2px dashed var(--border);
+    border-radius: 15px;
+    padding: 30px;
+    transition: 0.3s;
+}
+
+.upload-box:hover {
+    border-color: var(--primary);
+}
+
+.icon-group {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.input-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input[type="text"] {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #0a1224;
+    color: white;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    transition: 0.3s;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    padding: 8px 20px;
+    border-radius: 5px;
+}
+
+.result-box {
+    padding: 30px;
+    border-top: 1px solid var(--border);
+}
+
+.hidden { display: none; }
+
+.loader {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.meter-bg {
+    height: 10px;
+    background: var(--border);
+    border-radius: 5px;
+    margin: 15px 0;
+}
+
+.meter-bar {
+    height: 100%;
+    width: 0;
+    border-radius: 5px;
+    transition: 1s ease-out;
+}
+
+footer {
+    margin-top: 30px;
+    font-size: 0.8rem;
+    color: #495670;
+}
