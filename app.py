@@ -17,6 +17,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FRONTEND_FILES = {"index.html", "script.js", "style.css"}
 MAX_HTML_BYTES = 1_000_000
 MAX_DOWNLOAD_BYTES = 15 * 1024 * 1024
+DEFAULT_SQLITE_PATH = os.getenv("SQLITE_PATH", os.path.join(BASE_DIR, "detections.db"))
 
 SUSPICIOUS_TERMS = {
     "deepfake", "face-swap", "faceswap", "synthetic", "ai-generated",
@@ -34,11 +35,13 @@ if database_url.startswith("postgres://"):
     database_url = database_url.replace("postgres://", "postgresql://", 1)
 
 if not database_url:
-    # Local development falls back to the checked-in SQLite database automatically.
-    database_url = f"sqlite:///{os.path.join(BASE_DIR, 'detections.db')}"
+    # Local development falls back to SQLite automatically. On Render, you can
+    # either provide DATABASE_URL for Postgres or point SQLITE_PATH at a disk mount.
+    database_url = f"sqlite:///{DEFAULT_SQLITE_PATH}"
 
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SEED_DEMO_DATA"] = os.getenv("SEED_DEMO_DATA", "true").lower() == "true"
 
 db = SQLAlchemy(app)
 
@@ -459,6 +462,9 @@ def init_db():
 
 
 def seed_demo_data():
+    if not app.config["SEED_DEMO_DATA"]:
+        return
+
     if ImageDetection.query.count() > 0:
         return
 
@@ -670,6 +676,11 @@ def analytics():
     })
 
 
+@app.route("/health", methods=["GET"])
+def health():
+    return jsonify({"status": "ok"}), 200
+
+
 # ─── FRONTEND SERVING ─────────────────────────────────────────────
 @app.route("/")
 @app.route("/index.html")
@@ -692,12 +703,21 @@ def disable_cache(response):
     return response
 
 
-def main():
+def bootstrap_app():
     with app.app_context():
         init_db()
         seed_demo_data()
-    print("DeepDetect running → http://localhost:9000")
-    app.run(debug=True, port=9000)
+
+
+bootstrap_app()
+
+
+def main():
+    host = os.getenv("HOST", "0.0.0.0")
+    port = int(os.getenv("PORT", "9000"))
+    debug = os.getenv("FLASK_DEBUG", "true").lower() == "true"
+    print(f"DeepDetect running -> http://{host}:{port}")
+    app.run(host=host, port=port, debug=debug)
 
 
 if __name__ == "__main__":
